@@ -40,11 +40,11 @@ describe('Test Requirement', function () {
 
   describe('and tests', function () {
     it('should return true when all AND tests pass', function () {
-      assert.equal(true, tr(TEST_OBJECT, TEST_AND_TRUE));
+      assert.equal(tr(TEST_OBJECT, TEST_AND_TRUE), true);
     });
 
     it('should return false when one AND test fails', function () {
-      assert.equal(false, tr(TEST_OBJECT, TEST_AND_FALSE));
+      assert.equal(tr(TEST_OBJECT, TEST_AND_FALSE), false);
     });
   });
 
@@ -74,11 +74,11 @@ describe('Test Requirement', function () {
 
   describe('or tests', function () {
     it('should return true when all OR tests pass', function () {
-      assert.equal(true, tr(TEST_OBJECT, TEST_OR_TRUE));
+      assert.equal(tr(TEST_OBJECT, TEST_OR_TRUE), true);
     });
 
     it('should return false when all OR tests fail', function () {
-      assert.equal(false, tr(TEST_OBJECT, TEST_OR_FALSE));
+      assert.equal(tr(TEST_OBJECT, TEST_OR_FALSE), false);
     });
   });
 
