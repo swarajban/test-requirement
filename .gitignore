@@ -11,6 +11,3 @@ testRequirement.js.map
 .idea/
 test-requirement.iml
 
-# Misc. testing
-test.js
-

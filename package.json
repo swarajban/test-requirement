@@ -4,7 +4,7 @@
   "description": "Node module to test if an object satisfies certain requirements",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,8 @@
   "homepage": "https://github.com/swarajban/test-requirement",
   "dependencies": {
     "coffee-script": "^1.8.0"
+  },
+  "devDependencies": {
+    "mocha": "^2.1.0"
   }
 }
