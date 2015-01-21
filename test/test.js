@@ -2,7 +2,9 @@ var assert = require('assert');
 var tr = require('../');
 
 describe('Test Requirement', function () {
-  var TEST_DOCUMENT = {
+
+  // Sample objects
+  var TEST_OBJECT = {
     "id": "123",
     "x": "hello",
     "actors": [
@@ -10,6 +12,9 @@ describe('Test Requirement', function () {
       "george clooney"
     ]
   };
+
+
+  // And tests
 
   var TEST_AND_TRUE = {
     "and": [
@@ -33,6 +38,18 @@ describe('Test Requirement', function () {
     ]
   };
 
+  describe('and tests', function () {
+    it('should return true when all AND tests pass', function () {
+      assert.equal(true, tr(TEST_OBJECT, TEST_AND_TRUE));
+    });
+
+    it('should return false when one AND test fails', function () {
+      assert.equal(false, tr(TEST_OBJECT, TEST_AND_FALSE));
+    });
+  });
+
+  // Or tests
+
   var TEST_OR_TRUE = {
     "or": [
       {
@@ -55,6 +72,18 @@ describe('Test Requirement', function () {
     ]
   };
 
+  describe('or tests', function () {
+    it('should return true when all OR tests pass', function () {
+      assert.equal(true, tr(TEST_OBJECT, TEST_OR_TRUE));
+    });
+
+    it('should return false when all OR tests fail', function () {
+      assert.equal(false, tr(TEST_OBJECT, TEST_OR_FALSE));
+    });
+  });
+
+
+  // KV tests
   var TEST_KV_TRUE = {
     "id": ["123"]
   };
@@ -67,39 +96,17 @@ describe('Test Requirement', function () {
     "otherKey": ["NOPE"]
   };
 
-
-  describe('and tests', function () {
-    it('should return true when all AND tests pass', function () {
-      assert.equal(true, tr(TEST_DOCUMENT, TEST_AND_TRUE));
-    });
-
-    it('should return false when one AND test fails', function () {
-      assert.equal(false, tr(TEST_DOCUMENT, TEST_AND_FALSE));
-    });
-  });
-
-  describe('or tests', function () {
-    it('should return true when all OR tests pass', function () {
-      assert.equal(true, tr(TEST_DOCUMENT, TEST_OR_TRUE));
-    });
-
-    it('should return false when all OR tests fail', function () {
-      assert.equal(false, tr(TEST_DOCUMENT, TEST_OR_FALSE));
-    });
-  });
-
-
   describe('key value tests', function () {
     it('should return true when a test contains an array of values and document does too', function () {
-      assert.equal(true, tr(TEST_DOCUMENT, TEST_KV_TRUE));
+      assert.equal(true, tr(TEST_OBJECT, TEST_KV_TRUE));
     });
 
     it('should return false when a test contains an array of values and document does not', function () {
-      assert.equal(false, tr(TEST_DOCUMENT, TEST_KV_FALSE));
+      assert.equal(false, tr(TEST_OBJECT, TEST_KV_FALSE));
     });
 
     it('should return false whe a document does not contain key specified in test', function () {
-      assert.equal(false, tr(TEST_DOCUMENT, TEST_KV_NO_KEY));
+      assert.equal(false, tr(TEST_OBJECT, TEST_KV_NO_KEY));
     });
   });
 });
