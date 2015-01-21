@@ -10,7 +10,8 @@ describe('Test Requirement', function () {
     "actors": [
       "tom hanks",
       "george clooney"
-    ]
+    ],
+    "num": 10
   };
 
 
@@ -113,6 +114,82 @@ describe('Test Requirement', function () {
     "id": "NOPE"
   };
 
+  var TEST_KV_LT_TRUE = {
+    "num": {
+      "lt": 12
+    }
+  };
+
+  var TEST_KV_LT_FALSE = {
+    "num": {
+      "lt": 5
+    }
+  };
+
+  var TEST_KV_GT_TRUE = {
+    "num": {
+      "gte": 5
+    }
+  };
+
+  var TEST_KV_GT_FALSE = {
+    "num": {
+      "gt": 15
+    }
+  };
+
+  var TEST_KV_LTE_TRUE = {
+    "num": {
+      "lte": 10
+    }
+  };
+
+  var TEST_KV_LTE_FALSE = {
+    "num": {
+      "lte": 5
+    }
+  };
+
+  var TEST_KV_GTE_TRUE = {
+    "num": {
+      "gte": 10
+    }
+  };
+
+  var TEST_KV_GTE_FALSE = {
+    "num": {
+      "gte": 12
+    }
+  };
+
+  var TEST_KV_COMBO_RANGE_TRUE_ONE = {
+    "num": {
+      "lt": 30,
+      "gt": 5
+    }
+  };
+
+  var TEST_KV_COMBO_RANGE_TRUE_TWO = {
+    "num": {
+      "lte": 30,
+      "gte": 10
+    }
+  };
+
+  var TEST_KV_COMBO_RANGE_FALSE_ONE = {
+    "num": {
+      "lt": 8,
+      "gt": 5
+    }
+  };
+
+  var TEST_KV_COMBO_RANGE_FALSE_TWO = {
+    "num": {
+      "lte": 8,
+      "gte": 5
+    }
+  };
+
   describe('key value tests', function () {
     it('should return true when a test contains an array of values and document does too', function () {
       assert.equal(tr(TEST_OBJECT, TEST_KV_TRUE), true);
@@ -137,6 +214,34 @@ describe('Test Requirement', function () {
     it('should return true/false when a test specifies a key value, where value is not an array', function () {
       assert.equal(tr(TEST_OBJECT, TEST_KV_NOT_ARRAY), true);
       assert.equal(tr(TEST_OBJECT, TEST_KV_NOT_ARRAY_NOT_EQUAL), false);
+    });
+
+    it('should return true/false when test specifies a lt', function () {
+      assert.equal(tr(TEST_OBJECT, TEST_KV_LT_TRUE), true);
+      assert.equal(tr(TEST_OBJECT, TEST_KV_LT_FALSE), false);
+    });
+
+    it('should return true/false when test specifies a gt', function () {
+      assert.equal(tr(TEST_OBJECT, TEST_KV_GT_TRUE), true);
+      assert.equal(tr(TEST_OBJECT, TEST_KV_GT_FALSE), false);
+    });
+
+    it('should return true/false when test specifies a lte', function () {
+      assert.equal(tr(TEST_OBJECT, TEST_KV_LTE_TRUE), true);
+      assert.equal(tr(TEST_OBJECT, TEST_KV_LTE_FALSE), false);
+    });
+
+    it('should return true/false when test specifies a gte', function () {
+      assert.equal(tr(TEST_OBJECT, TEST_KV_GTE_TRUE), true);
+      assert.equal(tr(TEST_OBJECT, TEST_KV_GTE_FALSE), false);
+    });
+
+    it('should return true/false when test specifies combo of ranges', function () {
+      assert.equal(tr(TEST_OBJECT, TEST_KV_COMBO_RANGE_TRUE_ONE), true);
+      assert.equal(tr(TEST_OBJECT, TEST_KV_COMBO_RANGE_TRUE_TWO), true);
+
+      assert.equal(tr(TEST_OBJECT, TEST_KV_COMBO_RANGE_FALSE_ONE), false);
+      assert.equal(tr(TEST_OBJECT, TEST_KV_COMBO_RANGE_FALSE_TWO), false);
     });
 
   });
