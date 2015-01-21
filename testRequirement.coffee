@@ -1,17 +1,28 @@
+util = require 'util'
 
-evaluateFilter = (fieldName, values, object) ->
+
+evaluateSingleTest = (objectKey, testValues, object) ->
 #  assume values is an array of options
 #  TODO: values is:
 # single value
 # lt/gt
 # substring
 
-#  assume object field-value is single value
-#  TODO: field-value can be array
-
-  for value in values
-    return true if object[fieldName] == value
+  for testValue in testValues
+    return true if testValueInObject objectKey, testValue, object
   return false
+
+# Tests if testValue is in object, either directly or in array
+testValueInObject = (objectKey, testValue, object) ->
+  objectValue = object[objectKey];
+  if util.isArray objectValue
+    console.log "object value", objectValue
+    console.log "test value", testValue
+    index = objectValue.indexOf testValue
+    console.log "index: ", index
+    return (objectValue.indexOf testValue) isnt -1
+  else # objectValue is not an array, compare directly
+    return testValue == objectValue
 
 andTest = (object, tests) ->
   for test in tests
@@ -33,7 +44,7 @@ Test = (object, test) ->
       filterPass = orTest object, values
 
     else
-      filterPass = evaluateFilter fieldName, values, object
+      filterPass = evaluateSingleTest fieldName, values, object
 
     if not filterPass
       return false

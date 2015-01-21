@@ -96,17 +96,34 @@ describe('Test Requirement', function () {
     "otherKey": ["NOPE"]
   };
 
+  var TEST_KV_IN_OBJECT_ARRAY = {
+    "actors": ["tom hanks"]
+  };
+
+  var TEST_KV_NOT_IN_OBJECT_ARRAY = {
+    "actors": ["tom NOPE"]
+  };
+
   describe('key value tests', function () {
     it('should return true when a test contains an array of values and document does too', function () {
-      assert.equal(true, tr(TEST_OBJECT, TEST_KV_TRUE));
+      assert.equal(tr(TEST_OBJECT, TEST_KV_TRUE), true);
     });
 
     it('should return false when a test contains an array of values and document does not', function () {
-      assert.equal(false, tr(TEST_OBJECT, TEST_KV_FALSE));
+      assert.equal(tr(TEST_OBJECT, TEST_KV_FALSE), false);
     });
 
-    it('should return false whe a document does not contain key specified in test', function () {
-      assert.equal(false, tr(TEST_OBJECT, TEST_KV_NO_KEY));
+    it('should return false when a document does not contain key specified in test', function () {
+      assert.equal(tr(TEST_OBJECT, TEST_KV_NO_KEY), false);
+    });
+
+    it('should return true when a test specifies a field that exists in array of object', function () {
+      assert.equal(tr(TEST_OBJECT, TEST_KV_IN_OBJECT_ARRAY), true);
+    });
+
+    it('should return false when a test specifies a field that doesn\'t exist in array of object', function () {
+      console.log('START');
+      assert.equal(tr(TEST_OBJECT, TEST_KV_NOT_IN_OBJECT_ARRAY), false);
     });
   });
 });
