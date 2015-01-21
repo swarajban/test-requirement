@@ -247,4 +247,40 @@ describe('Test Requirement', function () {
     });
 
   });
+
+  var TEST_SUBSTRING_TRUE = {
+    "x": {
+      "substring": ["lo"]
+    }
+  };
+
+  var TEST_SUBSTRING_FALSE = {
+    "x": {
+      "substring": ["NOPE"]
+    }
+  };
+
+  var TEST_SUBSTRING_ARRAY_TRUE = {
+    "actors": {
+      "substring": ["tom"]
+    }
+  };
+
+  var TEST_SUBSTRING_ARRAY_FALSE = {
+    "actors": {
+      "substring": ["NOPE"]
+    }
+  };
+
+  describe('substring tests', function () {
+    it('should return true/false when a test specifies a substring', function () {
+      assert.equal(tr(TEST_OBJECT, TEST_SUBSTRING_TRUE), true);
+      assert.equal(tr(TEST_OBJECT, TEST_SUBSTRING_FALSE), false);
+    });
+
+    it('should return true/false when a test specifies a substring matching an array in object', function () {
+      assert.equal(tr(TEST_OBJECT, TEST_SUBSTRING_ARRAY_TRUE), true);
+      assert.equal(tr(TEST_OBJECT, TEST_SUBSTRING_ARRAY_FALSE), false);
+    });
+  });
 });

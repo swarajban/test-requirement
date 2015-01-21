@@ -2,9 +2,8 @@ util = require 'util'
 _ = require 'lodash'
 
 evaluateSingleTest = (objectKey, testValues, object) ->
-#  TODO: values is:
-# substring
   if util.isArray testValues
+    # test values is array like ["test1", "test2"]
     for testValue in testValues
       return true if testValueInObject objectKey, testValue, object
     return false
@@ -13,8 +12,12 @@ evaluateSingleTest = (objectKey, testValues, object) ->
     # testValues is range like {"lt": 30, "gte": 15}
     return inRange objectKey, testValues, object
 
+  else if isSubstringTest testValues
+    # testValues is an object like {"substring": ["subs", "string"]
+    return matchesSubstring objectKey, testValues, object
+
   else
-    # testValues is a single value
+    # testValues is a single value; a string, boolean, or number
     return testValueInObject objectKey, testValues, object
 
 isRange = (testValues) ->
@@ -44,6 +47,20 @@ inRange = (objectKey, ranges, object) ->
 
   return valid
 
+isSubstringTest = (testValues) ->
+  if (_.isPlainObject testValues) and 'substring' of testValues then true else false
+
+matchesSubstring = (objectKey, substringTest, object) ->
+  substringValues = substringTest['substring'] # array of test substrings
+  objectValue = object[objectKey]
+  objectValues = if util.isArray objectValue then objectValue else [ objectValue ]
+  for objectValue in objectValues
+    for substring in substringValues
+      # if substring in object value
+      return true if objectValue.indexOf(substring) isnt -1
+  return false
+
+
 # Tests if testValue is in object, either directly or in array
 testValueInObject = (objectKey, testValue, object) ->
   objectValue = object[objectKey];
@@ -62,19 +79,21 @@ orTest = (object, tests) ->
     return true if Test object, test
   return false
 
+
+# Returns true when an object satisfies test spec
 Test = (object, test) ->
-  for fieldName, values of test
-    filterPass = true
+  for fieldName, testValues of test # iterate through test spec
+    testPass = true
     if fieldName is 'and'
-      filterPass = andTest object, values
+      testPass = andTest object, testValues
 
     else if fieldName is 'or'
-      filterPass = orTest object, values
+      testPass = orTest object, testValues
 
     else
-      filterPass = evaluateSingleTest fieldName, values, object
+      testPass = evaluateSingleTest fieldName, testValues, object
 
-    if not filterPass
+    if not testPass
       return false
 
   return true
