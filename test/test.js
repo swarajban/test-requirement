@@ -114,6 +114,33 @@ describe('Test Requirement', function () {
     "id": "NOPE"
   };
 
+  describe('key value tests', function () {
+    it('should return true when a test contains an array of values and document does too', function () {
+      assert.equal(tr(TEST_OBJECT, TEST_KV_TRUE), true);
+    });
+
+    it('should return false when a test contains an array of values and document does not', function () {
+      assert.equal(tr(TEST_OBJECT, TEST_KV_FALSE), false);
+    });
+
+    it('should return false when a document does not contain key specified in test', function () {
+      assert.equal(tr(TEST_OBJECT, TEST_KV_NO_KEY), false);
+    });
+
+    it('should return true when a test specifies a field that exists in array of object', function () {
+      assert.equal(tr(TEST_OBJECT, TEST_KV_IN_OBJECT_ARRAY), true);
+    });
+
+    it('should return false when a test specifies a field that doesn\'t exist in array of object', function () {
+      assert.equal(tr(TEST_OBJECT, TEST_KV_NOT_IN_OBJECT_ARRAY), false);
+    });
+
+    it('should return true/false when a test specifies a key value, where value is not an array', function () {
+      assert.equal(tr(TEST_OBJECT, TEST_KV_NOT_ARRAY), true);
+      assert.equal(tr(TEST_OBJECT, TEST_KV_NOT_ARRAY_NOT_EQUAL), false);
+    });
+  });
+
   var TEST_KV_LT_TRUE = {
     "num": {
       "lt": 12
@@ -190,32 +217,7 @@ describe('Test Requirement', function () {
     }
   };
 
-  describe('key value tests', function () {
-    it('should return true when a test contains an array of values and document does too', function () {
-      assert.equal(tr(TEST_OBJECT, TEST_KV_TRUE), true);
-    });
-
-    it('should return false when a test contains an array of values and document does not', function () {
-      assert.equal(tr(TEST_OBJECT, TEST_KV_FALSE), false);
-    });
-
-    it('should return false when a document does not contain key specified in test', function () {
-      assert.equal(tr(TEST_OBJECT, TEST_KV_NO_KEY), false);
-    });
-
-    it('should return true when a test specifies a field that exists in array of object', function () {
-      assert.equal(tr(TEST_OBJECT, TEST_KV_IN_OBJECT_ARRAY), true);
-    });
-
-    it('should return false when a test specifies a field that doesn\'t exist in array of object', function () {
-      assert.equal(tr(TEST_OBJECT, TEST_KV_NOT_IN_OBJECT_ARRAY), false);
-    });
-
-    it('should return true/false when a test specifies a key value, where value is not an array', function () {
-      assert.equal(tr(TEST_OBJECT, TEST_KV_NOT_ARRAY), true);
-      assert.equal(tr(TEST_OBJECT, TEST_KV_NOT_ARRAY_NOT_EQUAL), false);
-    });
-
+  describe('range tests', function () {
     it('should return true/false when test specifies a lt', function () {
       assert.equal(tr(TEST_OBJECT, TEST_KV_LT_TRUE), true);
       assert.equal(tr(TEST_OBJECT, TEST_KV_LT_FALSE), false);
