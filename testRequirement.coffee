@@ -2,15 +2,17 @@ util = require 'util'
 
 
 evaluateSingleTest = (objectKey, testValues, object) ->
-#  assume values is an array of options
 #  TODO: values is:
-# single value
 # lt/gt
 # substring
+  if util.isArray testValues
+    for testValue in testValues
+      return true if testValueInObject objectKey, testValue, object
+    return false
 
-  for testValue in testValues
-    return true if testValueInObject objectKey, testValue, object
-  return false
+  else
+    # testValues is a single value
+    return testValueInObject objectKey, testValues, object
 
 # Tests if testValue is in object, either directly or in array
 testValueInObject = (objectKey, testValue, object) ->

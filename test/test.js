@@ -104,6 +104,15 @@ describe('Test Requirement', function () {
     "actors": ["tom NOPE"]
   };
 
+  var TEST_KV_NOT_ARRAY = {
+    "id": "123",
+    "x": "hello"
+  };
+
+  var TEST_KV_NOT_ARRAY_NOT_EQUAL = {
+    "id": "NOPE"
+  };
+
   describe('key value tests', function () {
     it('should return true when a test contains an array of values and document does too', function () {
       assert.equal(tr(TEST_OBJECT, TEST_KV_TRUE), true);
@@ -122,8 +131,13 @@ describe('Test Requirement', function () {
     });
 
     it('should return false when a test specifies a field that doesn\'t exist in array of object', function () {
-      console.log('START');
       assert.equal(tr(TEST_OBJECT, TEST_KV_NOT_IN_OBJECT_ARRAY), false);
     });
+
+    it('should return true/false when a test specifies a key value, where value is not an array', function () {
+      assert.equal(tr(TEST_OBJECT, TEST_KV_NOT_ARRAY), true);
+      assert.equal(tr(TEST_OBJECT, TEST_KV_NOT_ARRAY_NOT_EQUAL), false);
+    });
+
   });
 });
