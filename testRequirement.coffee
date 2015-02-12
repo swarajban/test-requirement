@@ -21,8 +21,7 @@ evaluateSingleTest = (objectKey, testValues, object) ->
 
   else
     # testValues is a single value; a string, boolean, or number
-    test = testValueInObject objectKey, testValues, object
-    return test
+    return testValueInObject objectKey, testValues, object
 
 # Check if the test is a range test
 isRange = (testValues) ->
