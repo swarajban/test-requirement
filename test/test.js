@@ -11,7 +11,8 @@ describe('Test Requirement', function () {
       "tom hanks",
       "george clooney"
     ],
-    "num": 10
+    "num": 10,
+    "reviews": [{"text": "blah"}, {"text": "bloh"}, {"text": "tea"}]
   };
 
 
@@ -272,6 +273,62 @@ describe('Test Requirement', function () {
     }
   };
 
+  var TEST_SINGLE_SUBSTRING_TRUE = {
+    "x": {
+        "substring": 'lo'
+    }
+  };
+
+  var TEST_SINGLE_SUBSTRING_FALSE = {
+    "x": {
+        "substring": "NOPE"
+    }
+  };
+
+  var TEST_SINGLE_SUBSTRING_ARRAY_TRUE = {
+    "actors": {
+        "substring": "tom"
+    }
+  };
+
+  var TEST_SINGLE_SUBSTRING_ARRAY_FALSE = {
+    "actors": {
+        "substring": ["NOPE"]
+    }
+  };
+
+  var TEST_IGNORE_CASE_DEFAULT_TRUE = {
+    "actors": {
+        "substring": "tOm"
+    }
+  };
+
+  var TEST_IGNORE_CASE_TRUE = {
+    "actors": {
+        "substring": "tOm",
+        "ignoreCase": true
+    }
+  };
+
+  var TEST_IGNORE_CASE_FALSE = {
+    "actors": {
+        "substring": "tOm",
+        "ignoreCase": false
+    }
+  };
+
+  var TEST_REVIEW_SUBSTRING_TRUE = {
+    "reviews": {
+        "substring": "tea"
+    }
+  };
+
+  var TEST_REVIEW_SUBSTRING_FALSE = {
+      "reviews": {
+          "substring": "NOPE"
+      }
+  };
+
   describe('substring tests', function () {
     it('should return true/false when a test specifies a substring', function () {
       assert.equal(tr(TEST_OBJECT, TEST_SUBSTRING_TRUE), true);
@@ -282,5 +339,27 @@ describe('Test Requirement', function () {
       assert.equal(tr(TEST_OBJECT, TEST_SUBSTRING_ARRAY_TRUE), true);
       assert.equal(tr(TEST_OBJECT, TEST_SUBSTRING_ARRAY_FALSE), false);
     });
+
+    it('should return true/false when a test specifies a single substring', function () {
+        assert.equal(tr(TEST_OBJECT, TEST_SINGLE_SUBSTRING_TRUE), true);
+        assert.equal(tr(TEST_OBJECT, TEST_SINGLE_SUBSTRING_FALSE), false);
+    });
+
+    it('should return true/false when a test specifies a single substring matching an array in object', function () {
+        assert.equal(tr(TEST_OBJECT, TEST_SINGLE_SUBSTRING_ARRAY_TRUE), true);
+        assert.equal(tr(TEST_OBJECT, TEST_SINGLE_SUBSTRING_ARRAY_FALSE), false);
+    });
+
+    it('should return true/false when a test specifies a substring matching an array in object and ignoreCase is true/false', function () {
+        assert.equal(tr(TEST_OBJECT, TEST_IGNORE_CASE_DEFAULT_TRUE), true);
+        assert.equal(tr(TEST_OBJECT, TEST_IGNORE_CASE_TRUE), true);
+        assert.equal(tr(TEST_OBJECT, TEST_IGNORE_CASE_FALSE), false);
+    });
+
+    it('should return true/false when a test specifies a single substring matching "reviews"', function () {
+        assert.equal(tr(TEST_OBJECT, TEST_REVIEW_SUBSTRING_TRUE), true);
+        assert.equal(tr(TEST_OBJECT, TEST_REVIEW_SUBSTRING_FALSE), false);
+    });
+
   });
 });
