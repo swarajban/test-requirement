@@ -317,18 +317,6 @@ describe('Test Requirement', function () {
     }
   };
 
-  var TEST_REVIEW_SUBSTRING_TRUE = {
-    "reviews": {
-        "substring": "tea"
-    }
-  };
-
-  var TEST_REVIEW_SUBSTRING_FALSE = {
-      "reviews": {
-          "substring": "NOPE"
-      }
-  };
-
   describe('substring tests', function () {
     it('should return true/false when a test specifies a substring', function () {
       assert.equal(tr(TEST_OBJECT, TEST_SUBSTRING_TRUE), true);
@@ -355,11 +343,5 @@ describe('Test Requirement', function () {
         assert.equal(tr(TEST_OBJECT, TEST_IGNORE_CASE_TRUE), true);
         assert.equal(tr(TEST_OBJECT, TEST_IGNORE_CASE_FALSE), false);
     });
-
-    it('should return true/false when a test specifies a single substring matching "reviews"', function () {
-        assert.equal(tr(TEST_OBJECT, TEST_REVIEW_SUBSTRING_TRUE), true);
-        assert.equal(tr(TEST_OBJECT, TEST_REVIEW_SUBSTRING_FALSE), false);
-    });
-
   });
 });

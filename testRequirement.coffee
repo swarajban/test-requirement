@@ -67,12 +67,6 @@ matchesSubstring = (objectKey, substringTest, object) ->
 
   for objectValue in objectValues
     for substring in substringValues
-
-      if objectKey is 'reviews' # concatenate all reviews objects
-        reviews = ""
-        reviews = reviews + objectValue.text
-        objectValue = reviews
-
       if 'ignoreCase' not of substringTest or substringTest['ignoreCase'] # ignore case of string by default and when ignoreCase is true
         re = RegExp substring, "im" # case insensitive, multiline matching
       else
