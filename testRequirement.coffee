@@ -24,12 +24,12 @@ evaluateSingleTest = (objectKey, testValues, object) ->
     return isEmpty objectKey, testValues, object
 
   else if isPubdateTest testValues
-    # testValues is an object like {"year": 2000} or {"year": {"lte": 2000, "gte": 1990}} or {"year": "now"}
+    # testValues is an object like {"year": "now"}
     return matchesPubdate objectKey, testValues, object
 
   else
     # testValues is a single value; a string, boolean, or number
-    testValueInObject objectKey, testValues, object
+    return testValueInObject objectKey, testValues, object
 
 # Check if the test is a range test
 isRange = (testValues) ->
@@ -127,7 +127,7 @@ testValueInObject = (objectKey, testValue, object) ->
   if objectKey not of object
     return false
   objectValue = object[objectKey]
-  objectValue = JSON.stringify(objectValue)
+  objectValue = JSON.stringify(objectValue) # match in stringified arrays and objects too
   re = RegExp testValue, "im"
   match = objectValue.match re
   return if match then true else false
