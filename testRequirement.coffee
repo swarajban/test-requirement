@@ -19,9 +19,9 @@ evaluateSingleTest = (objectKey, testValues, object) ->
     # ignoreCase is optional and defaults to true
     return matchesSubstring objectKey, testValues, object
 
-  else if isEmptyTest testValues
+  else if isRunEmptyTest testValues
     # testValues is an object like {"empty": true}
-    return isEmpty objectKey, testValues, object
+    return matchesEmptyTest objectKey, testValues, object
 
   else if isPubdateTest testValues
     # testValues is an object like {"year": "now"}
@@ -88,34 +88,27 @@ matchesSubstring = (objectKey, substringTest, object) ->
       return true if match
   return false
 
-# Check if the test is an empty test
-isEmptyTest = (testValues) ->
+# Check if the test is an 'empty' test
+isRunEmptyTest = (testValues) ->
   if (_.isPlainObject testValues) and 'empty' of testValues then true else false
 
-# Check if specific field value is empty
-isEmpty = (objectKey, emptyTest, object) ->
+# Check if specific field value is empty/non-empty according to expected test boolean
+# a field value is empty if it is "", [], {}, null, 0
+matchesEmptyTest = (objectKey, emptyTest, object) ->
   if objectKey not of object
-    # this field does not exist so return true that it's "empty"
-    # TODO: throw an error
-    return true
+    return false
 
   objectValue = object[objectKey]
-  objectValueIsCorrectType = (objectValue isnt null) and (typeof objectValue isnt 'boolean')
   shouldBeEmpty = emptyTest['empty']
+
   if typeof shouldBeEmpty isnt 'boolean'
-    # TODO: throw an error
-    return true
+    return false
 
-  if shouldBeEmpty and objectValueIsCorrectType #return true if objectValue is empty
-    return objectValue.length is 0
+  if shouldBeEmpty #return true if objectValue is empty
+    return (objectValue is null) or (objectValue is 0) or (objectValue.length is 0) or (Object.keys(objectValue).length is 0)
 
-  else if not shouldBeEmpty and objectValueIsCorrectType #return true if objectValue is not empty
-    return objectValue.length isnt 0
-
-  else #objectValue is not correct type, so makes no sense to check if it's empty
-    # TODO: throw an error
-    return true
-
+  else #return true if objectValue is not empty
+    return not ((objectValue is null) or (objectValue is 0) or (objectValue.length is 0) or (Object.keys(objectValue).length is 0))
 
 
 # Check if the test is a pubdate test
@@ -144,8 +137,7 @@ testValueInObject = (objectKey, testValue, object) ->
   objectValue = object[objectKey]
   objectValue = JSON.stringify(objectValue) # match in stringified arrays and objects too
   re = RegExp testValue, "im"
-  match = re.test objectValue
-  return match
+  return re.test objectValue
 
 # "And" the results of multiple tests
 andTest = (object, tests) ->
