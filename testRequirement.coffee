@@ -102,6 +102,9 @@ isEmpty = (objectKey, emptyTest, object) ->
   objectValue = object[objectKey]
   objectValueIsCorrectType = (objectValue isnt null) and (typeof objectValue isnt 'boolean')
   shouldBeEmpty = emptyTest['empty']
+  if typeof shouldBeEmpty isnt 'boolean'
+    # TODO: throw an error
+    return true
 
   if shouldBeEmpty and objectValueIsCorrectType #return true if objectValue is empty
     return objectValue.length is 0
@@ -110,7 +113,7 @@ isEmpty = (objectKey, emptyTest, object) ->
     return objectValue.length isnt 0
 
   else #objectValue is not correct type, so makes no sense to check if it's empty
-    #TODO: throw an error
+    # TODO: throw an error
     return true
 
 
