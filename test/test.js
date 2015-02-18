@@ -12,7 +12,9 @@ describe('Test Requirement', function () {
       "george clooney"
     ],
     "num": 10,
-    "reviews": [{"text": "blah"}, {"text": "bloh"}, {"text": "tea"}]
+    "reviews": [{"text": "blah"}, {"text": "bloh"}, {"text": "tea"}],
+    "emptyField": [],
+    "pubdate": 1342170000
   };
 
 
@@ -344,4 +346,53 @@ describe('Test Requirement', function () {
         assert.equal(tr(TEST_OBJECT, TEST_IGNORE_CASE_FALSE), false);
     });
   });
+
+  var TEST_NOT_EMPTY_FIELD_TRUE = {
+      "actors": {
+          "empty": false
+      }
+  };
+
+  var TEST_NOT_EMPTY_FIELD_FALSE = {
+      "actors": {
+          "empty": true
+      }
+  };
+
+  var TEST_EMPTY_FIELD_TRUE = {
+      "emptyField": {
+          "empty": true
+      }
+  };
+
+  var TEST_EMPTY_FIELD_FALSE = {
+      "emptyField": {
+          "empty": false
+      }
+  };
+
+  describe('empty tests', function () {
+      it('should return true/false when a test field is not empty ', function () {
+          assert.equal(tr(TEST_OBJECT, TEST_NOT_EMPTY_FIELD_TRUE), true);
+          assert.equal(tr(TEST_OBJECT, TEST_NOT_EMPTY_FIELD_FALSE), false);
+      });
+      it('should return true/false when a test field is empty', function () {
+          assert.equal(tr(TEST_OBJECT, TEST_EMPTY_FIELD_TRUE), true);
+          assert.equal(tr(TEST_OBJECT, TEST_EMPTY_FIELD_FALSE), false);
+      });
+  });
+
+  var TEST_YEAR_NOW_FALSE = {
+      "pubdate": {
+          "year": "now"
+      }
+  };
+
+  describe('empty tests', function () {
+      it('should return true/false when the actual pubdate year is not this year', function () {
+          assert.equal(tr(TEST_OBJECT, TEST_YEAR_NOW_FALSE), false);
+      });
+  });
+
+
 });
