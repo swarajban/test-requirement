@@ -82,7 +82,7 @@ matchesSubstring = (objectKey, substringTest, object) ->
       else
         re = RegExp substring, "m" # multiline matching
       if objectValueStr
-        match = objectValueStr.match re
+        match = re.test objectValueStr
 
       # if substring in object value str
       return true if match
@@ -94,14 +94,26 @@ isEmptyTest = (testValues) ->
 
 # Check if specific field value is empty
 isEmpty = (objectKey, emptyTest, object) ->
+  if objectKey not of object
+    # this field does not exist so return true that it's "empty"
+    # TODO: throw an error
+    return true
+
   objectValue = object[objectKey]
+  objectValueIsCorrectType = (objectValue isnt null) and (typeof objectValue isnt 'boolean')
   shouldBeEmpty = emptyTest['empty']
 
-  if shouldBeEmpty #return true if objectValue is empty
+  if shouldBeEmpty and objectValueIsCorrectType #return true if objectValue is empty
     return objectValue.length is 0
 
-  else if not shouldBeEmpty #return true if objectValue is not empty
+  else if not shouldBeEmpty and objectValueIsCorrectType #return true if objectValue is not empty
     return objectValue.length isnt 0
+
+  else #objectValue is not correct type, so makes no sense to check if it's empty
+    #TODO: throw an error
+    return true
+
+
 
 # Check if the test is a pubdate test
 isPubdateTest = (testValues) ->
@@ -110,7 +122,7 @@ isPubdateTest = (testValues) ->
 # Extract specific time from the document pubdate field and compare it with the test
 matchesPubdate = (objectKey, pubdateTest, object) ->
   objectValue = object[objectKey]
-  year = new Date(objectValue * 1000).getFullYear() # convert to milliseconds
+  year = new Date(objectValue).getFullYear() # convert to milliseconds
 
   if 'year' of pubdateTest # compare years
     testValue = pubdateTest['year']
@@ -129,8 +141,8 @@ testValueInObject = (objectKey, testValue, object) ->
   objectValue = object[objectKey]
   objectValue = JSON.stringify(objectValue) # match in stringified arrays and objects too
   re = RegExp testValue, "im"
-  match = objectValue.match re
-  return if match then true else false
+  match = re.test objectValue
+  return match
 
 # "And" the results of multiple tests
 andTest = (object, tests) ->
