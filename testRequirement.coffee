@@ -93,7 +93,6 @@ isRunEmptyTest = (testValues) ->
   if (_.isPlainObject testValues) and 'empty' of testValues then true else false
 
 # Check if specific field value is empty/non-empty according to expected test boolean
-# a field value is empty if it is "", [], {}, null, 0
 matchesEmptyTest = (objectKey, emptyTest, object) ->
   if objectKey not of object
     return false
@@ -105,11 +104,14 @@ matchesEmptyTest = (objectKey, emptyTest, object) ->
     return false
 
   if shouldBeEmpty #return true if objectValue is empty
-    return (objectValue is null) or (objectValue is 0) or (objectValue.length is 0) or (Object.keys(objectValue).length is 0)
+    return isEmpty objectValue
 
   else #return true if objectValue is not empty
-    return not ((objectValue is null) or (objectValue is 0) or (objectValue.length is 0) or (Object.keys(objectValue).length is 0))
+    return not isEmpty objectValue
 
+# Check if a field value is empty (if it is "", [], {}, null, 0)
+isEmpty = (objectValue) ->
+  return (objectValue is null) or (objectValue is 0) or (objectValue.length is 0) or (Object.keys(objectValue).length is 0)
 
 # Check if the test is a pubdate test
 isPubdateTest = (testValues) ->
