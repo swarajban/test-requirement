@@ -103,11 +103,8 @@ matchesEmptyTest = (objectKey, emptyTest, object) ->
   if typeof shouldBeEmpty isnt 'boolean'
     return false
 
-  if shouldBeEmpty #return true if objectValue is empty
-    return isEmpty objectValue
-
-  else #return true if objectValue is not empty
-    return not isEmpty objectValue
+  empty = isEmpty objectValue
+  if shouldBeEmpty then empty else not empty
 
 # Check if a field value is empty (if it is "", [], {}, null, 0)
 isEmpty = (objectValue) ->
