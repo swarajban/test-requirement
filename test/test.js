@@ -12,7 +12,12 @@ describe('Test Requirement', function () {
       "george clooney"
     ],
     "num": 10,
-    "reviews": [{"text": "blah"}, {"text": "bloh"}, {"text": "tea"}]
+    "reviews": [{"text": "blah"}, {"text": "bloh"}, {"text": "tea"}],
+    "emptyArr": [],
+    "pubdate": 1342170000,
+    "emptyNull": null,
+    "emptyObj": {},
+    "emptyStr": ""
   };
 
 
@@ -344,4 +349,129 @@ describe('Test Requirement', function () {
         assert.equal(tr(TEST_OBJECT, TEST_IGNORE_CASE_FALSE), false);
     });
   });
+
+  var TEST_NOT_EMPTY_FIELD_TRUE = {
+      "actors": {
+          "empty": false
+      }
+  };
+
+  var TEST_NOT_EMPTY_FIELD_FALSE = {
+      "actors": {
+          "empty": true
+      }
+  };
+
+  var TEST_EMPTY_FIELD_TRUE = {
+      "emptyArr": {
+          "empty": true
+      }
+  };
+
+  var TEST_EMPTY_FIELD_FALSE = {
+      "emptyArr": {
+          "empty": false
+      }
+  };
+
+  var TEST_EMPTY_FIELD_NOT_IN_OBJECT_FALSE = {
+    "nonexistingField": {
+        "empty": true
+    }
+  };
+
+  var TEST_EMPTY_TRUE_VALUE_NULL_TRUE = {
+      "emptyNull": {
+          "empty": true
+      }
+  };
+
+  var TEST_EMPTY_FALSE_VALUE_NULL_FALSE = {
+      "emptyNull": {
+          "empty": false
+      }
+  };
+
+  var TEST_EMPTY_TRUE_VALUE_EMPTY_STRING_TRUE = {
+      "emptyStr": {
+          "empty": true
+      }
+  };
+
+  var TEST_EMPTY_FALSE_VALUE_EMPTY_STRING_FALSE = {
+      "emptyStr": {
+          "empty": false
+      }
+  };
+
+  var TEST_EMPTY_TRUE_VALUE_EMPTY_ARR_TRUE = {
+      "emptyArr": {
+          "empty": true
+      }
+  };
+
+  var TEST_EMPTY_FALSE_VALUE_EMPTY_ARR_FALSE = {
+      "emptyArr": {
+          "empty": false
+      }
+  };
+
+  var TEST_EMPTY_TRUE_VALUE_EMPTY_OBJ_TRUE = {
+      "emptyObj": {
+          "empty": true
+      }
+  };
+
+  var TEST_EMPTY_FALSE_VALUE_EMPTY_OBJ_FALSE = {
+      "emptyObj": {
+          "empty": false
+      }
+  };
+
+  var TEST_EMPTY_VALUE_RANDOM_STRING_FALSE = {
+      "actors": {
+          "empty": "blooga"
+      }
+  };
+
+  describe('empty tests', function () {
+      it('should return true/false when a test field is not empty', function () {
+          assert.equal(tr(TEST_OBJECT, TEST_NOT_EMPTY_FIELD_TRUE), true);
+          assert.equal(tr(TEST_OBJECT, TEST_NOT_EMPTY_FIELD_FALSE), false);
+      });
+      it('should return true/false when a test field is empty', function () {
+          assert.equal(tr(TEST_OBJECT, TEST_EMPTY_FIELD_TRUE), true);
+          assert.equal(tr(TEST_OBJECT, TEST_EMPTY_FIELD_FALSE), false);
+      });
+      it('should return false when the test field DNE in the document', function() {
+          assert.equal(tr(TEST_OBJECT, TEST_EMPTY_FIELD_NOT_IN_OBJECT_FALSE), false);
+      });
+      it('should return false when the value of empty is not a boolean', function() {
+          assert.equal(tr(TEST_OBJECT, TEST_EMPTY_VALUE_RANDOM_STRING_FALSE), false);
+      });
+      it('should return true/false when a test field is different empty elements', function () {
+          assert.equal(tr(TEST_OBJECT, TEST_EMPTY_TRUE_VALUE_NULL_TRUE), true);
+          assert.equal(tr(TEST_OBJECT, TEST_EMPTY_FALSE_VALUE_NULL_FALSE), false);
+          assert.equal(tr(TEST_OBJECT, TEST_EMPTY_TRUE_VALUE_EMPTY_STRING_TRUE), true);
+          assert.equal(tr(TEST_OBJECT, TEST_EMPTY_FALSE_VALUE_EMPTY_STRING_FALSE), false);
+          assert.equal(tr(TEST_OBJECT, TEST_EMPTY_TRUE_VALUE_EMPTY_ARR_TRUE), true);
+          assert.equal(tr(TEST_OBJECT, TEST_EMPTY_FALSE_VALUE_EMPTY_ARR_FALSE), false);
+          assert.equal(tr(TEST_OBJECT, TEST_EMPTY_TRUE_VALUE_EMPTY_OBJ_TRUE), true);
+          assert.equal(tr(TEST_OBJECT, TEST_EMPTY_FALSE_VALUE_EMPTY_OBJ_FALSE), false);
+      });
+  });
+
+  var TEST_YEAR_NOW_FALSE = {
+      "pubdate": {
+          "year": "now"
+      }
+  };
+
+  describe('year tests', function () {
+      it('should return true/false when the actual pubdate year is not this year', function () {
+          assert.equal(tr(TEST_OBJECT, TEST_YEAR_NOW_FALSE), false);
+      });
+  });
+
+
 });

@@ -19,6 +19,14 @@ evaluateSingleTest = (objectKey, testValues, object) ->
     # ignoreCase is optional and defaults to true
     return matchesSubstring objectKey, testValues, object
 
+  else if isRunEmptyTest testValues
+    # testValues is an object like {"empty": true}
+    return matchesEmptyTest objectKey, testValues, object
+
+  else if isPubdateTest testValues
+    # testValues is an object like {"year": "now"}
+    return matchesPubdate objectKey, testValues, object
+
   else
     # testValues is a single value; a string, boolean, or number
     return testValueInObject objectKey, testValues, object
@@ -62,35 +70,76 @@ matchesSubstring = (objectKey, substringTest, object) ->
   substringValues = substringTest['substring'] # array of test substrings
   substringValues = if util.isArray substringValues then substringValues else [ substringValues ] #put substringValues in array if it isn't already
 
-  objectValue = object[objectKey] # array of document field values
+  objectValue = object[objectKey] # document field values
   objectValues = if util.isArray objectValue then objectValue else [ objectValue ] #put objectValues in array if it isn't already
 
   for objectValue in objectValues
+    objectValueStr = JSON.stringify(objectValue) # look for substrings in stringified arrays and objects too
+    match = false
     for substring in substringValues
       if 'ignoreCase' not of substringTest or substringTest['ignoreCase'] # ignore case of string by default and when ignoreCase is true
         re = RegExp substring, "im" # case insensitive, multiline matching
       else
         re = RegExp substring, "m" # multiline matching
-      if objectValue
-        objectValue = objectValue.match re
+      if objectValueStr
+        match = re.test objectValueStr
 
-      # if substring in object value
-      return true if objectValue
+      # if substring in object value str
+      return true if match
+  return false
+
+# Check if the test is an 'empty' test
+isRunEmptyTest = (testValues) ->
+  if (_.isPlainObject testValues) and 'empty' of testValues then true else false
+
+# Check if specific field value is empty/non-empty according to expected test boolean
+matchesEmptyTest = (objectKey, emptyTest, object) ->
+  if objectKey not of object
+    return false
+
+  objectValue = object[objectKey]
+  shouldBeEmpty = emptyTest['empty']
+
+  if typeof shouldBeEmpty isnt 'boolean'
+    return false
+
+  if shouldBeEmpty #return true if objectValue is empty
+    return isEmpty objectValue
+
+  else #return true if objectValue is not empty
+    return not isEmpty objectValue
+
+# Check if a field value is empty (if it is "", [], {}, null, 0)
+isEmpty = (objectValue) ->
+  return (objectValue is null) or (objectValue is 0) or (objectValue.length is 0) or (Object.keys(objectValue).length is 0)
+
+# Check if the test is a pubdate test
+isPubdateTest = (testValues) ->
+  if (_.isPlainObject testValues) and 'year' of testValues then true else false
+
+# Extract specific time from the document pubdate field and compare it with the test
+matchesPubdate = (objectKey, pubdateTest, object) ->
+  objectValue = object[objectKey]
+  year = new Date(objectValue).getFullYear() # convert to milliseconds
+
+  if 'year' of pubdateTest # compare years
+    testValue = pubdateTest['year']
+
+    if testValue is 'now' # compare pubdate year value with year now
+      thisYear = new Date().getFullYear()
+      return year is thisYear
+
+  # TODO expand test to month, etc
   return false
 
 # Tests if testValue is in object, either directly or in array
 testValueInObject = (objectKey, testValue, object) ->
+  if objectKey not of object
+    return false
   objectValue = object[objectKey]
-  if objectKey is 'originurl'
-    request.get({url: objectValue, followRedirect: false}, (err, response) =>
-      objectValue = response.headers.location
-      return testValue is objectValue
-    )
-  else
-    if util.isArray objectValue
-      return (objectValue.indexOf testValue) isnt -1
-    else # objectValue is not an array, compare directly
-      return testValue is objectValue
+  objectValue = JSON.stringify(objectValue) # match in stringified arrays and objects too
+  re = RegExp testValue, "im"
+  return re.test objectValue
 
 # "And" the results of multiple tests
 andTest = (object, tests) ->
@@ -116,11 +165,11 @@ Test = (object, test) ->
 
     else
       testPass = evaluateSingleTest fieldName, testValues, object
+
     if not testPass
       return false
 
   return true
 
 module.exports = exports = Test
-
   
