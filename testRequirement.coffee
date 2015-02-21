@@ -23,9 +23,9 @@ evaluateSingleTest = (objectKey, testValues, object) ->
     # testValues is an object like {"empty": true}
     return matchesEmptyTest objectKey, testValues, object
 
-  else if isPubdateTest testValues
+  else if isDateTest testValues
     # testValues is an object like {"year": "now"}
-    return matchesPubdate objectKey, testValues, object
+    return dateTest objectKey, testValues, object
 
   else
     # testValues is a single value; a string, boolean, or number
@@ -110,14 +110,14 @@ matchesEmptyTest = (objectKey, emptyTest, object) ->
 isEmpty = (objectValue) ->
   return (objectValue is null) or (objectValue is 0) or (objectValue.length is 0) or (Object.keys(objectValue).length is 0)
 
-# Check if the test is a pubdate test
-isPubdateTest = (testValues) ->
+# Check if the test is a date test
+isDateTest = (testValues) ->
   if (_.isPlainObject testValues) and 'year' of testValues then true else false
 
-# Extract specific time from the document pubdate field and compare it with the test
-matchesPubdate = (objectKey, pubdateTest, object) ->
+# Extract specific time from a date field and compare it with test
+dateTest = (objectKey, pubdateTest, object) ->
   objectValue = object[objectKey]
-  year = new Date(objectValue).getFullYear() # convert to milliseconds
+  year = new Date(objectValue).getFullYear()
 
   if 'year' of pubdateTest # compare years
     testValue = pubdateTest['year']
