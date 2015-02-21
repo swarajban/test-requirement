@@ -7,21 +7,21 @@ evaluateSingleTest = (objectKey, testValues, object) ->
   if util.isArray testValues
     # test values is array like ["test1", "test2"]
     for testValue in testValues
-      return true if testValueInObject objectKey, testValue, object
+      return true if valueInObjectTest objectKey, testValue, object
     return false
 
-  else if isRange testValues
+  else if isRangeTest testValues
     # testValues is range like {"lt": 30, "gte": 15}
-    return inRange objectKey, testValues, object
+    return rangeTest objectKey, testValues, object
 
   else if isSubstringTest testValues
     # testValues is an object like {"substring": ["subs", "string"], "ignoreCase": false}
     # ignoreCase is optional and defaults to true
-    return matchesSubstring objectKey, testValues, object
+    return substringTest objectKey, testValues, object
 
-  else if isRunEmptyTest testValues
+  else if isEmptyTest testValues
     # testValues is an object like {"empty": true}
-    return matchesEmptyTest objectKey, testValues, object
+    return emptyTest objectKey, testValues, object
 
   else if isDateTest testValues
     # testValues is an object like {"year": "now"}
@@ -29,17 +29,17 @@ evaluateSingleTest = (objectKey, testValues, object) ->
 
   else
     # testValues is a single value; a string, boolean, or number
-    return testValueInObject objectKey, testValues, object
+    return valueInObjectTest objectKey, testValues, object
 
 # Check if the test is a range test
-isRange = (testValues) ->
+isRangeTest = (testValues) ->
   if _.isPlainObject testValues
     if 'lt' of testValues or 'gt' of testValues or 'lte' of testValues or 'gte' of testValues
       return true
   return false
 
 # Perform the range test
-inRange = (objectKey, ranges, object) ->
+rangeTest = (objectKey, ranges, object) ->
   valid = true
   value = object[objectKey]
   if 'lt' of ranges
@@ -65,7 +65,7 @@ isSubstringTest = (testValues) ->
   if (_.isPlainObject testValues) and 'substring' of testValues then true else false
 
 # Perform the substring test, ignore case by default or if specified
-matchesSubstring = (objectKey, substringTest, object) ->
+substringTest = (objectKey, substringTest, object) ->
 
   substringValues = substringTest['substring'] # array of test substrings
   substringValues = if util.isArray substringValues then substringValues else [ substringValues ] #put substringValues in array if it isn't already
@@ -89,11 +89,11 @@ matchesSubstring = (objectKey, substringTest, object) ->
   return false
 
 # Check if the test is an 'empty' test
-isRunEmptyTest = (testValues) ->
+isEmptyTest = (testValues) ->
   if (_.isPlainObject testValues) and 'empty' of testValues then true else false
 
 # Check if specific field value is empty/non-empty according to expected test boolean
-matchesEmptyTest = (objectKey, emptyTest, object) ->
+emptyTest = (objectKey, emptyTest, object) ->
   if objectKey not of object
     return false
 
@@ -130,7 +130,7 @@ dateTest = (objectKey, pubdateTest, object) ->
   return false
 
 # Tests if testValue is in object, either directly or in array
-testValueInObject = (objectKey, testValue, object) ->
+valueInObjectTest = (objectKey, testValue, object) ->
   if objectKey not of object
     return false
   objectValue = object[objectKey]
