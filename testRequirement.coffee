@@ -65,9 +65,9 @@ isSubstringTest = (testValues) ->
   if (_.isPlainObject testValues) and 'substring' of testValues then true else false
 
 # Perform the substring test, ignore case by default or if specified
-substringTest = (objectKey, substringTest, object) ->
+substringTest = (objectKey, test, object) ->
 
-  substringValues = substringTest['substring'] # array of test substrings
+  substringValues = test['substring'] # array of test substrings
   substringValues = if util.isArray substringValues then substringValues else [ substringValues ] #put substringValues in array if it isn't already
 
   objectValue = object[objectKey] # document field values
@@ -77,7 +77,7 @@ substringTest = (objectKey, substringTest, object) ->
     objectValueStr = JSON.stringify(objectValue) # look for substrings in stringified arrays and objects too
     match = false
     for substring in substringValues
-      if 'ignoreCase' not of substringTest or substringTest['ignoreCase'] # ignore case of string by default and when ignoreCase is true
+      if 'ignoreCase' not of test or test['ignoreCase'] # ignore case of string by default and when ignoreCase is true
         re = RegExp substring, "im" # case insensitive, multiline matching
       else
         re = RegExp substring, "m" # multiline matching
@@ -93,12 +93,12 @@ isEmptyTest = (testValues) ->
   if (_.isPlainObject testValues) and 'empty' of testValues then true else false
 
 # Check if specific field value is empty/non-empty according to expected test boolean
-emptyTest = (objectKey, emptyTest, object) ->
+emptyTest = (objectKey, test, object) ->
   if objectKey not of object
     return false
 
   objectValue = object[objectKey]
-  shouldBeEmpty = emptyTest['empty']
+  shouldBeEmpty = test['empty']
 
   if typeof shouldBeEmpty isnt 'boolean'
     return false
@@ -108,7 +108,10 @@ emptyTest = (objectKey, emptyTest, object) ->
 
 # Check if a field value is empty (if it is "", [], {}, null, 0)
 isEmpty = (objectValue) ->
-  return (objectValue is null) or (objectValue is 0) or (objectValue.length is 0) or (Object.keys(objectValue).length is 0)
+  return (not objectValue?) or
+      (objectValue == '') or
+      (objectValue == 0) or
+      (_.isEmpty(objectValue))
 
 # Check if the test is a date test
 isDateTest = (testValues) ->

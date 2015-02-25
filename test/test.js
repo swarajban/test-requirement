@@ -434,6 +434,18 @@ describe('Test Requirement', function () {
       }
   };
 
+  var TEST_EMPTY_VALUE_STRING_FALSE = {
+    "x": {
+      "empty": true
+    }
+  };
+
+  var TEST_EMPTY_VALUE_STRING_TRUE = {
+    "x": {
+      "empty": false
+    }
+  };
+
   describe('empty tests', function () {
       it('should return true/false when a test field is not empty', function () {
           assert.equal(tr(TEST_OBJECT, TEST_NOT_EMPTY_FIELD_TRUE), true);
@@ -458,6 +470,8 @@ describe('Test Requirement', function () {
           assert.equal(tr(TEST_OBJECT, TEST_EMPTY_FALSE_VALUE_EMPTY_ARR_FALSE), false);
           assert.equal(tr(TEST_OBJECT, TEST_EMPTY_TRUE_VALUE_EMPTY_OBJ_TRUE), true);
           assert.equal(tr(TEST_OBJECT, TEST_EMPTY_FALSE_VALUE_EMPTY_OBJ_FALSE), false);
+        assert.equal(tr(TEST_OBJECT, TEST_EMPTY_VALUE_STRING_FALSE), false);
+        assert.equal(tr(TEST_OBJECT, TEST_EMPTY_VALUE_STRING_TRUE), true);
       });
   });
 
