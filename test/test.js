@@ -280,45 +280,45 @@ describe('Test Requirement', function () {
 
   var TEST_SINGLE_SUBSTRING_TRUE = {
     "x": {
-        "substring": 'lo'
+      "substring": 'lo'
     }
   };
 
   var TEST_SINGLE_SUBSTRING_FALSE = {
     "x": {
-        "substring": "NOPE"
+      "substring": "NOPE"
     }
   };
 
   var TEST_SINGLE_SUBSTRING_ARRAY_TRUE = {
     "actors": {
-        "substring": "tom"
+      "substring": "tom"
     }
   };
 
   var TEST_SINGLE_SUBSTRING_ARRAY_FALSE = {
     "actors": {
-        "substring": ["NOPE"]
+      "substring": ["NOPE"]
     }
   };
 
   var TEST_IGNORE_CASE_DEFAULT_TRUE = {
     "actors": {
-        "substring": "tOm"
+      "substring": "tOm"
     }
   };
 
   var TEST_IGNORE_CASE_TRUE = {
     "actors": {
-        "substring": "tOm",
-        "ignoreCase": true
+      "substring": "tOm",
+      "ignoreCase": true
     }
   };
 
   var TEST_IGNORE_CASE_FALSE = {
     "actors": {
-        "substring": "tOm",
-        "ignoreCase": false
+      "substring": "tOm",
+      "ignoreCase": false
     }
   };
 
@@ -334,104 +334,104 @@ describe('Test Requirement', function () {
     });
 
     it('should return true/false when a test specifies a single substring', function () {
-        assert.equal(tr(TEST_OBJECT, TEST_SINGLE_SUBSTRING_TRUE), true);
-        assert.equal(tr(TEST_OBJECT, TEST_SINGLE_SUBSTRING_FALSE), false);
+      assert.equal(tr(TEST_OBJECT, TEST_SINGLE_SUBSTRING_TRUE), true);
+      assert.equal(tr(TEST_OBJECT, TEST_SINGLE_SUBSTRING_FALSE), false);
     });
 
     it('should return true/false when a test specifies a single substring matching an array in object', function () {
-        assert.equal(tr(TEST_OBJECT, TEST_SINGLE_SUBSTRING_ARRAY_TRUE), true);
-        assert.equal(tr(TEST_OBJECT, TEST_SINGLE_SUBSTRING_ARRAY_FALSE), false);
+      assert.equal(tr(TEST_OBJECT, TEST_SINGLE_SUBSTRING_ARRAY_TRUE), true);
+      assert.equal(tr(TEST_OBJECT, TEST_SINGLE_SUBSTRING_ARRAY_FALSE), false);
     });
 
     it('should return true/false when a test specifies a substring matching an array in object and ignoreCase is true/false', function () {
-        assert.equal(tr(TEST_OBJECT, TEST_IGNORE_CASE_DEFAULT_TRUE), true);
-        assert.equal(tr(TEST_OBJECT, TEST_IGNORE_CASE_TRUE), true);
-        assert.equal(tr(TEST_OBJECT, TEST_IGNORE_CASE_FALSE), false);
+      assert.equal(tr(TEST_OBJECT, TEST_IGNORE_CASE_DEFAULT_TRUE), true);
+      assert.equal(tr(TEST_OBJECT, TEST_IGNORE_CASE_TRUE), true);
+      assert.equal(tr(TEST_OBJECT, TEST_IGNORE_CASE_FALSE), false);
     });
   });
 
   var TEST_NOT_EMPTY_FIELD_TRUE = {
-      "actors": {
-          "empty": false
-      }
+    "actors": {
+      "empty": false
+    }
   };
 
   var TEST_NOT_EMPTY_FIELD_FALSE = {
-      "actors": {
-          "empty": true
-      }
+    "actors": {
+      "empty": true
+    }
   };
 
   var TEST_EMPTY_FIELD_TRUE = {
-      "emptyArr": {
-          "empty": true
-      }
+    "emptyArr": {
+      "empty": true
+    }
   };
 
   var TEST_EMPTY_FIELD_FALSE = {
-      "emptyArr": {
-          "empty": false
-      }
+    "emptyArr": {
+      "empty": false
+    }
   };
 
   var TEST_EMPTY_FIELD_NOT_IN_OBJECT_FALSE = {
     "nonexistingField": {
-        "empty": true
+      "empty": true
     }
   };
 
   var TEST_EMPTY_TRUE_VALUE_NULL_TRUE = {
-      "emptyNull": {
-          "empty": true
-      }
+    "emptyNull": {
+      "empty": true
+    }
   };
 
   var TEST_EMPTY_FALSE_VALUE_NULL_FALSE = {
-      "emptyNull": {
-          "empty": false
-      }
+    "emptyNull": {
+      "empty": false
+    }
   };
 
   var TEST_EMPTY_TRUE_VALUE_EMPTY_STRING_TRUE = {
-      "emptyStr": {
-          "empty": true
-      }
+    "emptyStr": {
+      "empty": true
+    }
   };
 
   var TEST_EMPTY_FALSE_VALUE_EMPTY_STRING_FALSE = {
-      "emptyStr": {
-          "empty": false
-      }
+    "emptyStr": {
+      "empty": false
+    }
   };
 
   var TEST_EMPTY_TRUE_VALUE_EMPTY_ARR_TRUE = {
-      "emptyArr": {
-          "empty": true
-      }
+    "emptyArr": {
+      "empty": true
+    }
   };
 
   var TEST_EMPTY_FALSE_VALUE_EMPTY_ARR_FALSE = {
-      "emptyArr": {
-          "empty": false
-      }
+    "emptyArr": {
+      "empty": false
+    }
   };
 
   var TEST_EMPTY_TRUE_VALUE_EMPTY_OBJ_TRUE = {
-      "emptyObj": {
-          "empty": true
-      }
+    "emptyObj": {
+      "empty": true
+    }
   };
 
   var TEST_EMPTY_FALSE_VALUE_EMPTY_OBJ_FALSE = {
-      "emptyObj": {
-          "empty": false
-      }
+    "emptyObj": {
+      "empty": false
+    }
   };
 
   var TEST_EMPTY_VALUE_RANDOM_STRING_FALSE = {
-      "actors": {
-          "empty": "blooga"
-      }
+    "actors": {
+      "empty": "blooga"
+    }
   };
 
   var TEST_EMPTY_VALUE_STRING_FALSE = {
@@ -447,44 +447,44 @@ describe('Test Requirement', function () {
   };
 
   describe('empty tests', function () {
-      it('should return true/false when a test field is not empty', function () {
-          assert.equal(tr(TEST_OBJECT, TEST_NOT_EMPTY_FIELD_TRUE), true);
-          assert.equal(tr(TEST_OBJECT, TEST_NOT_EMPTY_FIELD_FALSE), false);
-      });
-      it('should return true/false when a test field is empty', function () {
-          assert.equal(tr(TEST_OBJECT, TEST_EMPTY_FIELD_TRUE), true);
-          assert.equal(tr(TEST_OBJECT, TEST_EMPTY_FIELD_FALSE), false);
-      });
-      it('should return false when the test field DNE in the document', function() {
-          assert.equal(tr(TEST_OBJECT, TEST_EMPTY_FIELD_NOT_IN_OBJECT_FALSE), false);
-      });
-      it('should return false when the value of empty is not a boolean', function() {
-          assert.equal(tr(TEST_OBJECT, TEST_EMPTY_VALUE_RANDOM_STRING_FALSE), false);
-      });
-      it('should return true/false when a test field is different empty elements', function () {
-          assert.equal(tr(TEST_OBJECT, TEST_EMPTY_TRUE_VALUE_NULL_TRUE), true);
-          assert.equal(tr(TEST_OBJECT, TEST_EMPTY_FALSE_VALUE_NULL_FALSE), false);
-          assert.equal(tr(TEST_OBJECT, TEST_EMPTY_TRUE_VALUE_EMPTY_STRING_TRUE), true);
-          assert.equal(tr(TEST_OBJECT, TEST_EMPTY_FALSE_VALUE_EMPTY_STRING_FALSE), false);
-          assert.equal(tr(TEST_OBJECT, TEST_EMPTY_TRUE_VALUE_EMPTY_ARR_TRUE), true);
-          assert.equal(tr(TEST_OBJECT, TEST_EMPTY_FALSE_VALUE_EMPTY_ARR_FALSE), false);
-          assert.equal(tr(TEST_OBJECT, TEST_EMPTY_TRUE_VALUE_EMPTY_OBJ_TRUE), true);
-          assert.equal(tr(TEST_OBJECT, TEST_EMPTY_FALSE_VALUE_EMPTY_OBJ_FALSE), false);
-        assert.equal(tr(TEST_OBJECT, TEST_EMPTY_VALUE_STRING_FALSE), false);
-        assert.equal(tr(TEST_OBJECT, TEST_EMPTY_VALUE_STRING_TRUE), true);
-      });
+    it('should return true/false when a test field is not empty', function () {
+      assert.equal(tr(TEST_OBJECT, TEST_NOT_EMPTY_FIELD_TRUE), true);
+      assert.equal(tr(TEST_OBJECT, TEST_NOT_EMPTY_FIELD_FALSE), false);
+    });
+    it('should return true/false when a test field is empty', function () {
+      assert.equal(tr(TEST_OBJECT, TEST_EMPTY_FIELD_TRUE), true);
+      assert.equal(tr(TEST_OBJECT, TEST_EMPTY_FIELD_FALSE), false);
+    });
+    it('should return false when the test field DNE in the document', function() {
+      assert.equal(tr(TEST_OBJECT, TEST_EMPTY_FIELD_NOT_IN_OBJECT_FALSE), false);
+    });
+    it('should return false when the value of empty is not a boolean', function() {
+      assert.equal(tr(TEST_OBJECT, TEST_EMPTY_VALUE_RANDOM_STRING_FALSE), false);
+    });
+    it('should return true/false when a test field is different empty elements', function () {
+      assert.equal(tr(TEST_OBJECT, TEST_EMPTY_TRUE_VALUE_NULL_TRUE), true);
+      assert.equal(tr(TEST_OBJECT, TEST_EMPTY_FALSE_VALUE_NULL_FALSE), false);
+      assert.equal(tr(TEST_OBJECT, TEST_EMPTY_TRUE_VALUE_EMPTY_STRING_TRUE), true);
+      assert.equal(tr(TEST_OBJECT, TEST_EMPTY_FALSE_VALUE_EMPTY_STRING_FALSE), false);
+      assert.equal(tr(TEST_OBJECT, TEST_EMPTY_TRUE_VALUE_EMPTY_ARR_TRUE), true);
+      assert.equal(tr(TEST_OBJECT, TEST_EMPTY_FALSE_VALUE_EMPTY_ARR_FALSE), false);
+      assert.equal(tr(TEST_OBJECT, TEST_EMPTY_TRUE_VALUE_EMPTY_OBJ_TRUE), true);
+      assert.equal(tr(TEST_OBJECT, TEST_EMPTY_FALSE_VALUE_EMPTY_OBJ_FALSE), false);
+      assert.equal(tr(TEST_OBJECT, TEST_EMPTY_VALUE_STRING_FALSE), false);
+      assert.equal(tr(TEST_OBJECT, TEST_EMPTY_VALUE_STRING_TRUE), true);
+    });
   });
 
   var TEST_YEAR_NOW_FALSE = {
-      "pubdate": {
-          "year": "now"
-      }
+    "pubdate": {
+      "year": "now"
+    }
   };
 
   describe('year tests', function () {
-      it('should return true/false when the actual pubdate year is not this year', function () {
-          assert.equal(tr(TEST_OBJECT, TEST_YEAR_NOW_FALSE), false);
-      });
+    it('should return true/false when the actual pubdate year is not this year', function () {
+      assert.equal(tr(TEST_OBJECT, TEST_YEAR_NOW_FALSE), false);
+    });
   });
 
 
